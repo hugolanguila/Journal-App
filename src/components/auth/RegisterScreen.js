@@ -1,15 +1,21 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import validator from 'validator';
 
+import validator from 'validator';
+import { startRegisterEmailPasswordName } from './../../actions/auth';
+import { setError, removeError } from './../../actions/ui';
 import { useForm } from './../../hooks/useForm';
 
 export const RegisterScreen = () => {
     
+	const dispatch = useDispatch();
+	const { msgError } = useSelector( state => state.ui );
+
 	const [ formValues, handleInputChange ] = 
 		useForm({
 			name: 'Hugo',
-			email: 'hugo@gmail.com'
+			email: 'hugo@gmail.com',
 			password: '1234567',
 			password2: '1234567'
 		});
@@ -19,21 +25,22 @@ export const RegisterScreen = () => {
 	const handleRegister = (e) =>{
 		e.preventDefault();
 		if( isValid() ){
-
+			dispatch( startRegisterEmailPasswordName( email, password, name ));
 		}
 	}
 
 	const isValid = () =>{
 		if( name.trim().length === 0 ){
-			console.log('You must specify a name');
+			dispatch( setError('You must specify a name') );
 			return false;
 		} else if( !validator.isEmail( email )){	
-			console.log('The email is not valid');
+			dispatch( setError('The email is not valid'));
 			return false;
-		} else if( password !== password2 || pasword.length < 7 ){
-			console.log('The password length must be greater than 6 characters');
+		} else if( password !== password2 || password.length < 7 ){
+			dispatch( setError('The password length must be greater than 6 characters'));
 			return false;
 		}
+		dispatch( removeError() );
 		return true;
 	}
 
@@ -41,7 +48,13 @@ export const RegisterScreen = () => {
         <>
             <h3 className="auth__title">Register</h3>
             <form onSubmit={ handleRegister } >
-
+				{	msgError && 
+					(
+						<div className="auth_alert-error">
+							{ msgError }
+						</div>
+					)
+				}
                 <input 
                     type="text"
                     placeholder="Name"

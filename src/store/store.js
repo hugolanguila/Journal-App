@@ -7,7 +7,7 @@ import {
 
 import thunk from 'redux-thunk';
 import { authReducer } from './../reducers/authReducer';
-import { iuReducer } from './../reducers/uiReducer';
+import { uiReducer } from './../reducers/uiReducer';
 
 const composeEnhancers = 
 	( typeof window !== 'undefined'  && 
