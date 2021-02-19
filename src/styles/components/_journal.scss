@@ -8,6 +8,7 @@
     background-color: $dark-grey;
     color: white;
     display: flex;
+
     flex-direction: column;
     height: 100vh;
     padding-left: 10px;
@@ -51,6 +52,7 @@
     background-color: white;
     border-radius: 4px;
     color: $dark-grey;
+    justify-content: space-between;
     display: flex;
     margin-bottom: 10px;
     overflow: hidden;

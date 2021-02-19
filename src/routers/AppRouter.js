@@ -10,7 +10,8 @@ import { login } from './../actions/auth';
 import { AuthRouter } from './AuthRouter';
 import { PrivateRoutes } from './PrivateRoutes'; 
 import { PublicRoutes } from './PublicRoutes'; 
-import { JournalScreen } from '../components/journal/JournalScreen';
+import { JournalScreen } from './../components/journal/JournalScreen';
+import { startLoadingNotes } from './../actions/notes';
 
 export const AppRouter = () => {
     const dispatch  = useDispatch();
@@ -19,10 +20,11 @@ export const AppRouter = () => {
 	const [ isLoggedIn, setIsLoggedIn ] = useState( false );
 
 	useEffect(()=>{
-		firebase.auth().onAuthStateChanged((user)=>{
+		firebase.auth().onAuthStateChanged( (user)=>{
 			if(user?.uid){
 				dispatch( login( user.uid, user.displayName ));
 				setIsLoggedIn( true );
+				dispatch( startLoadingNotes( user.uid ));
 			}else{
 				setIsLoggedIn( false );
 			}

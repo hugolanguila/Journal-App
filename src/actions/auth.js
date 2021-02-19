@@ -5,6 +5,7 @@ import {
 import Swal from 'sweetalert2';
 import { types } from './../types/types';
 import { startLoading, finishLoading } from './ui';
+import { noteLogout } from './notes';
 
 export const startLoginEmailPassword = ( email, password ) =>{
 	return ( dispatch ) =>{
@@ -58,6 +59,7 @@ export const startLogout = () => {
 		firebase.auth().signOut()
 			.then( () =>{
 				dispatch( logout() );
+				dispatch( noteLogout() );
 			})
 			.catch( err => {
 				Swal.fire('Error', err.message, 'error');
